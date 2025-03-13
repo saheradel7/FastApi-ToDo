@@ -1,5 +1,5 @@
 services:
-  book:
+  to_do_app:
     build:
       context: .
       args:
@@ -7,6 +7,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./Book:/Book
+      - ./ToDoApp:/ToDoApp
     command: >
       sh -c "uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
