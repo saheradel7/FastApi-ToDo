@@ -1,27 +1,9 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from database import engine, SessionLocal
-import models
-from typing import Annotated
-from sqlalchemy.orm import Session
+from accounts import auth
+from todos import todos
 
 app = FastAPI()
 
-
-models.Base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-db_injection = Annotated[Session, Depends(get_db)]
-
-
-@app.get("/todo")
-async def test(db: db_injection):
-    todos = db.query(models.Todos).all()
-    return todos
+app.include_router(auth.router)
+app.include_router(todos.router)
